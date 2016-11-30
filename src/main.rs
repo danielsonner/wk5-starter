@@ -50,14 +50,13 @@ fn main() {
                     println!("{} -> {}", words[2].to_string(), branches.get(&words[2].to_string()).unwrap().last().unwrap());
                 } 
                 "newcommit" => {
-                    // TODO: make work for multiword string
                     let w1 = words[words.len()-1];
                     let mut w2 = words[2].to_string();
                     for n in 3..(words.len()-1) {
                         w2 += " ";
                         w2 += words[n];
                     }
-                    let br = branches.get_mut(w1);//.unwrap().push(Rc::new(w2.to_string()));
+                    let br = branches.get_mut(w1);
                     match br {
                         Some(v) => {
                             v.push(Rc::new(w2.to_string()));
@@ -91,24 +90,3 @@ fn main() {
         std::io::stdout().flush();
     }
 }
-
-
-// I'm thinking a hash table to a  linked list of RCs
-// Key = Branch , Value = LL of commits
-
-// > new branch A master 
-// A -> [Rc('Starting Payload')]
-
-//> new commit 'Payload 1' A
-// A -> [Rc('Payload 1'), Rc('Starting Payload')]
-
-// > new branch B A~1
-// A -> [Rc('Payload 1', 'Starting Payload')]
-// B -> [Rc('Starting Payload')]
-
-// > new commit 'Payload 2' B
-// A -> [Rc('Payload 1'), Rc('Starting Payload')]
-// B -> [Rc('Payload 2'), Rc('Starting Payload')]
-
-// > delete branch B
-// A -> [Rc('Payload 1'), Rc('Starting Payload')]
